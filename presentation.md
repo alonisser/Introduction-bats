@@ -1,44 +1,41 @@
 class: center, middle
 
-# Testing CLI oriented tools and ansible playbooks with bats
+# Testing CLI oriented tools with BATS
 
 
 [live presentation](http://alonisser.github.io/Introduction-bats) <br/>
 [twitter](alonisser@twitter.com), [medium](https://medium.com/@alonisser/)
 
-#####you can also read my [political blog](degeladom@wordpress.com)
----
-
-# Installation
-
-```bash
-sudo add-apt-repository ppa:duggan/bats
-sudo apt-get update
-sudo apt-get install bats
-
-```
+#####Shameless promotion: you can also read my [political blog](degeladom@wordpress.com)
 ---
 
 # BATS
 
-[bats in github](https://github.com/sstephenson/bats)
-Stands for: Bash Automated Testing system
+[BATS](https://github.com/sstephenson/bats)
+
+Stands for: Bash Automated Testing System
 
 ---
 
 # PROBLEM: Test driven development for CLI apps
  
-## I would like to functional test (or integration, depends on lingo) the same as I do with webapps. from outside in
-## How?
+--
+* I would like to functional test (or integration, depends on lingo) the same as I do with webapps. from outside in
 
-## BATS to the rescue!
+--
+
+* Why? verification, reproducible results, regression safeguard.
+
+--
+
+* How? BATS to the rescue!
 
 ---
 
 # BATS
 
 * Allows setup/teardown
-* assertions
+* test suites
 * syntactic sugar around common CLI testing checks
 
 ---
@@ -55,10 +52,11 @@ class: center, middle
     command -v swamp
 }
 ```
-* Would fail if exist code is different from 0
+* Would Simply fail if exit code is different from 0
+* everything* in BATS is run with set -x
+
 
 ---
-
 # Testing output
 
 ```bash
@@ -68,11 +66,13 @@ class: center, middle
    [ "${lines[0]}" = "  Usage: swamp [options]" ]
 }
 ```
-* ```$status``` special variable with the status code
-* ```${lines[0]}``` special array contains the output lines and accessible as array
+* run - command to encapsulate calling our command (allows exiting with different value then 0)
+* $status special variable with the status code
+* $output
+* ${lines[0]} special array contains the output lines and accessible as array
+
 
 ---
-
 # Skipping
 
 
@@ -82,18 +82,19 @@ class: center, middle
 
 }
 ```
----
 
+
+---
 # Shebang
+
 ```bash
 #! /usr/bin/env bats
 ```
 
 * Needed in the beginning of the test suite
 
+
 ---
-
-
 # Teardown and setup
 ```bash
 
@@ -107,7 +108,6 @@ teardown() {
 ```
 
 ---
-
 # How would it look?
 
 ```bash
@@ -118,8 +118,18 @@ ok 2 Check swamp -h prints usage
 ok 3 Check swamp -d runs as daemon mode and swamp -H stops it
 ok 4 Check stopping and starting a service actually starts the service
 ```
----
 
+---
+# Installation
+
+```bash
+sudo add-apt-repository ppa:duggan/bats
+sudo apt-get update
+sudo apt-get install bats
+
+```
+
+---
 # More info
 
 * Nice blog post: https://blog.engineyard.com/2014/bats-test-command-line-tools
